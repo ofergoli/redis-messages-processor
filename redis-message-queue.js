@@ -20,26 +20,6 @@ class RedisMessageQueue {
 		this.createRecoveryProcessMessagesCron();
 	}
 
-	createMockFuture() {
-		const ts = new Date().getTime();
-		for(let i = 10 ; i < 15 ; i++){
-			var currentTime = ts + (i * 1000);
-			for (let i = 0 ; i < 2 ; i++){
-				this.pushMessage({ts: currentTime, message: 'FUTURE MOCK ---> process id is:' + process.pid});
-			}
-		}
-	}
-
-	createMockRecovery() {
-		const ts = new Date().getTime();
-		for(let i = 5 ; i < 10 ; i++){
-			var currentTime = ts - (i * 1000);
-			for (let i = 0 ; i < 2 ; i++){
-				this.pushMessage({ts: currentTime, message: 'PAST MOCK ---> process id is:' + process.pid});
-			}
-		}
-	}
-
 	buildRedisKey(ts) {
 		const shasum = crypto.createHash('sha1');
 		shasum.update(ts);
@@ -64,7 +44,7 @@ class RedisMessageQueue {
 
 	printFutureMessages(messages) {
 		for(let message of messages) {
-			console.log('FUTURE message:', message);
+			console.log('Future message:', message);
 		}
 	}
 
@@ -120,6 +100,26 @@ class RedisMessageQueue {
 	createRecoveryProcessMessagesCron() {
 		var job = new CronJob(CRON_EVERY_SECOND, this.messageRecoveryProcessing.bind(this), null, true, TIMEZONE);
 		job.start();
+	}
+
+	createMockFuture() {
+		const ts = new Date().getTime();
+		for(let i = 10 ; i < 15 ; i++){
+			var currentTime = ts + (i * 1000);
+			for (let i = 0 ; i < 2 ; i++){
+				this.pushMessage({ts: currentTime, message: 'FUTURE MOCK ---> process id is:' + process.pid});
+			}
+		}
+	}
+
+	createMockRecovery() {
+		const ts = new Date().getTime();
+		for(let i = 5 ; i < 10 ; i++){
+			var currentTime = ts - (i * 1000);
+			for (let i = 0 ; i < 2 ; i++){
+				this.pushMessage({ts: currentTime, message: 'PAST MOCK ---> process id is:' + process.pid});
+			}
+		}
 	}
 }
 
