@@ -57,11 +57,11 @@ Produce messages Test Example:
 ```
 
 This endpoint will create 10 seconds from execution 10 messages 2 each second from within
-10 second from execute 2 messages
-11 second from execute 2 messages
-12 second from execute 2 messages
-13 second from execute 2 messages
-14 second from execute 2 messages
+* 10 second from execute 2 messages
+* 11 second from execute 2 messages
+* 12 second from execute 2 messages
+* 13 second from execute 2 messages
+* 14 second from execute 2 messages
 
 ### Recovery (Current or Past) Message Mock Test
 
@@ -73,11 +73,11 @@ In this case the messages simulate messages from the past or current that didn't
 ```
 
 This endpoint will create 5 seconds from execution, 10 messages 2 each second from within
-5 second from execute 2 messages (messages with current ts - 5000ms)
-6 second from execute 2 messages (messages with current ts - 6000ms)
-7 second from execute 2 messages (messages with current ts - 7000ms)
-8 second from execute 2 messages (messages with current ts - 8000ms)
-9 second from execute 2 messages (messages with current ts - 9000ms)
+* 5 second from execute 2 messages (messages with current ts - 5000ms)
+* 6 second from execute 2 messages (messages with current ts - 6000ms)
+* 7 second from execute 2 messages (messages with current ts - 7000ms)
+* 8 second from execute 2 messages (messages with current ts - 8000ms)
+* 9 second from execute 2 messages (messages with current ts - 9000ms)
 
 
 
