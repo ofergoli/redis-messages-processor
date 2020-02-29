@@ -32,8 +32,8 @@ class RedisMessageQueue {
 
 	createMockRecovery() {
 		const ts = new Date().getTime();
-		for(let i = 3 ; i < 10 ; i++){
-			var currentTime = ts - i * 1000;
+		for(let i = 5 ; i < 10 ; i++){
+			var currentTime = ts - (i * 1000);
 			for (let i = 0 ; i < 2 ; i++){
 				this.pushMessage({ts: currentTime, message: 'PAST MOCK ---> process id is:' + process.pid});
 			}
