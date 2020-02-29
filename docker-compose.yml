@@ -1,0 +1,36 @@
+version: '2'
+services:
+  redis-message-producer:
+    build: .
+    ports:
+      - "5000:3000"
+    links:
+      - redis
+    environment:
+      - REDIS_URL=redis
+  redis-message-producer2:
+    build: .
+    ports:
+      - "5001:3000"
+    links:
+      - redis
+    environment:
+      - REDIS_URL=redis
+  redis-message-producer3:
+    build: .
+    ports:
+      - "5002:3000"
+    links:
+      - redis
+    environment:
+      - REDIS_URL=redis
+  redis-message-producer4:
+    build: .
+    ports:
+      - "5003:3000"
+    links:
+      - redis
+    environment:
+      - REDIS_URL=redis
+  redis:
+    image: "redis:alpine"

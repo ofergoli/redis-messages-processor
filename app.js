@@ -2,21 +2,15 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const RedisMessageQueue = require('./redis-message-queue');
-const PORT = process.env.PORT || '3003';
+const PORT = process.env.PORT || '3000';
+const messageProducerController = require('./controllers/message-producer');
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.put('/echoAtTime', async (req, res) => {
-	try {
-		await global.messageProducer.pushMessage(req.body);
-		return res.send('ok');
-	} catch (err) {
-		return res.sendStatus(400);
-	}
-});
+app.use('/', messageProducerController);
 
 app.listen(PORT, () => {
 	global.messageProducer = new RedisMessageQueue();
-	console.log('Server is up ', PORT);
+	console.log(`PROCESS WAITING FOR MESSAGES TO BE PROCESS ON PID ${process.pid} AND POST ${PORT}`);
 });

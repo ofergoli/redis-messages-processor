@@ -1,5 +1,7 @@
 const redis = require("redis");
-const client = redis.createClient();
+const client = redis.createClient({
+	host: process.env.REDIS_URL,
+});
 const crypto = require('crypto');
 const moment = require('moment');
 const CronJob = require('cron').CronJob;
@@ -16,16 +18,14 @@ class RedisMessageQueue {
 	constructor() {
 		this.createProcessMessagesCron();
 		this.createRecoveryProcessMessagesCron();
-		this.createMockFuture();
-		this.createMockRecovery();
 	}
 
 	createMockFuture() {
 		const ts = new Date().getTime();
-		for(let i = 8 ; i < 13 ; i++){
+		for(let i = 10 ; i < 15 ; i++){
 			var currentTime = ts + (i * 1000);
 			for (let i = 0 ; i < 2 ; i++){
-				this.pushMessage({ts: currentTime, message: 'OFER FUTURE MOCK ---> ' + process.pid});
+				this.pushMessage({ts: currentTime, message: 'FUTURE MOCK ---> process id is:' + process.pid});
 			}
 		}
 	}
@@ -34,8 +34,8 @@ class RedisMessageQueue {
 		const ts = new Date().getTime();
 		for(let i = 3 ; i < 10 ; i++){
 			var currentTime = ts - i * 1000;
-			for (let i = 0 ; i < 5 ; i++){
-				this.pushMessage({ts: currentTime, message: 'OFER PAST MOCK ---> ' + process.pid});
+			for (let i = 0 ; i < 2 ; i++){
+				this.pushMessage({ts: currentTime, message: 'PAST MOCK ---> process id is:' + process.pid});
 			}
 		}
 	}
@@ -62,6 +62,18 @@ class RedisMessageQueue {
 		});
 	}
 
+	printFutureMessages(messages) {
+		for(let message of messages) {
+			console.log('FUTURE message:', message);
+		}
+	}
+
+	printRecoveryMessages(messages) {
+		for(let message of messages) {
+			console.log('Recovery message:', message);
+		}
+	}
+
 	processFutureMessages() {
 		const key = this.buildRedisKey(moment().format(KEY_PATTERN));
 		client.multi()
@@ -71,7 +83,7 @@ class RedisMessageQueue {
 			.exec((err, results) => {
 				const messages = results[0];
 				if (messages.length > 0) {
-					console.log('*** -----------------------> FUTURE	 messages!', messages);
+					this.printFutureMessages(messages);
 				}
 			})
 	}
@@ -92,7 +104,7 @@ class RedisMessageQueue {
 					fetchResults.exec((err, lists) => {
 						lists.forEach(list => {
 							if (list.length && list.length > 0) {
-								console.log('*** -----------------------> RECOVER messages!', list);
+								this.printRecoveryMessages(list);
 							}
 						})
 					});
