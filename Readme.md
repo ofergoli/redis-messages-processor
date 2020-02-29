@@ -2,7 +2,7 @@
 
 Summery
 ----
-I made application on nodejs that connect to redis and got the following logic:
+I made application with nodejs that connect to redis and got the following logic:
 1. Process future messages.
 2. Process current or past messages. (if all of the node instances went down).
 
